@@ -1,0 +1,10 @@
+{
+    "project": "RabTech Diagnostic",
+    "environment": "development",
+    "required_tools": [
+        "git",
+        "python",
+        "pip",
+        "code"
+    ]
+}
