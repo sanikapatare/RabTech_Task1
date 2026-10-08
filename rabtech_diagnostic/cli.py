@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import os
 import platform
@@ -22,13 +23,20 @@ def inspect_environment():
         "python_version": platform.python_version(),
         "platform": platform.platform(),
         "disk_space_gb": round(disk.free / (1024 ** 3), 2),
-
-        # Store only environment variable names,
-        # not their private values.
         "environment_variables": sorted(os.environ.keys()),
-
         "developer_tools": developer_tools,
     }
+
+
+def check_dependency(dependency_name):
+    """Check whether a Python dependency is available."""
+
+    if importlib.util.find_spec(dependency_name) is None:
+        raise ImportError(
+            f"Required dependency is missing: {dependency_name}"
+        )
+
+    return True
 
 
 def load_config(config_path):

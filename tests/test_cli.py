@@ -2,9 +2,8 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
 
-from rabtech_diagnostic.cli import create_report
+from rabtech_diagnostic.cli import check_dependency, create_report
 
 
 class TestDiagnosticCLI(unittest.TestCase):
@@ -16,11 +15,12 @@ class TestDiagnosticCLI(unittest.TestCase):
         self.assertIn("python_version", report)
         self.assertIn("disk_space_gb", report)
         self.assertIn("developer_tools", report)
+        self.assertIn("environment_variables", report)
 
-    # Test 2: Missing configuration file
+    # Test 2: Missing Python dependency
     def test_missing_dependency(self):
-        with self.assertRaises(FileNotFoundError):
-            create_report("missing-config.json")
+        with self.assertRaises(ImportError):
+            check_dependency("this_dependency_does_not_exist")
 
     # Test 3: Malformed configuration
     def test_malformed_configuration(self):
